@@ -1,5 +1,6 @@
-const User = require("../models/auth.models");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/auth.models");
 
 // Login user
 exports.signin = async (req, res) => {
@@ -16,7 +17,19 @@ exports.signin = async (req, res) => {
       return res.status(401).send({ message: "Invalid credentials" });
     }
 
-    res.status(200).send({ messages: "Login Succesful!", name: user.name });
+    // Generate token
+    const token = jwt.sign(
+      {
+        user: user.name,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res
+      .header("auth-token", token)
+      .status(200)
+      .send({ messages: "Login Succesful!", token });
   } catch (error) {
     res.status(400).send(error);
   }
