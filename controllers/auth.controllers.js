@@ -1,5 +1,7 @@
-const User = require("../models/user.models");
+const User = require("../models/auth.models");
+const bcrypt = require("bcrypt");
 
+// Login user
 exports.signin = async (req, res) => {
   try {
     const { name, password } = req.body;
@@ -9,8 +11,9 @@ exports.signin = async (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
 
-    if (user.password !== password) {
-      return res.status(404).send({ message: "Wrong password" });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).send({ message: "Invalid credentials" });
     }
 
     res.status(200).send({ messages: "Login Succesful!", name: user.name });
