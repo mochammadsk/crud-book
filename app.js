@@ -1,25 +1,53 @@
 const express = require("express");
+const session = require("express-session");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-const { AutoEncryptionLoggerLevel } = require("mongodb");
 
 const app = express();
 
-const corsOption = {
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
-  method: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type"],
-  credentials: false,
-};
+// Middleware CORS & Parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    method: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  })
+);
 
-app.use(cors(corsOption));
+// Middleware Session
+app.use(
+  session({
+    secret: "crud",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Middleware Body Parser
+app.use(
+  bodyParser.json({
+    extended: true,
+    limit: "50mb",
+  })
+);
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: "50mb",
+  })
+);
+
+// Middleware Logger
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, X-API-Key"
-  );
+  console.log(`Incoming request: ${req.method} ${req.url}`);
   next();
 });
+
+// Call Routes
+require("./routes/auth.routes")(app);
 
 module.exports = app;
