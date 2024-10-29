@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("../models/user.models");
+const User = require("../models/auth.models");
 
 mongoose
   .connect("mongodb://localhost:27017/crud")
