@@ -8,7 +8,7 @@ exports.createBook = async (req, res) => {
     // Check if book already exists
     const existingBook = await Book.findOne({ title });
     if (existingBook) {
-      return res.status(400).send({ message: "Book already exists" });
+      return res.status(400).send({ message: "Book already exists!" });
     }
 
     // Create new book
@@ -19,7 +19,9 @@ exports.createBook = async (req, res) => {
     });
 
     await newBook.save();
-    res.status(200).send({ message: "Book created", book: newBook });
+    res
+      .status(200)
+      .send({ message: "Book successfully added!", book: newBook });
   } catch (error) {
     res.status(400).send({ message: "error", error: error });
   }
@@ -29,7 +31,7 @@ exports.createBook = async (req, res) => {
 exports.getAllBooks = async (req, res) => {
   try {
     const books = await Book.find();
-    res.status(200).send({ message: "All books", books });
+    res.status(200).send({ message: "Below is the book data!", books });
   } catch (error) {
     res.status(400).send({ message: "error", error: error });
   }
@@ -39,7 +41,7 @@ exports.getAllBooks = async (req, res) => {
 exports.getBookById = async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
-    res.status(200).send({ message: "Book found", book });
+    res.status(200).send({ message: "Book found!", book });
   } catch (error) {
     res.status(400).send({ message: "error", error: error });
   }
@@ -54,7 +56,7 @@ exports.updateBook = async (req, res) => {
       { title, author, year },
       { new: true }
     );
-    res.status(200).send({ message: "Book updated", book });
+    res.status(200).send({ message: "Book updated!", book });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -64,7 +66,7 @@ exports.updateBook = async (req, res) => {
 exports.deletOneBook = async (req, res) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
-    res.status(200).send({ message: "Book deleted", book });
+    res.status(200).send({ message: "Book deleted!", book });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -74,7 +76,7 @@ exports.deletOneBook = async (req, res) => {
 exports.deleteAllBooks = async (req, res) => {
   try {
     const books = await Book.deleteMany();
-    res.status(200).send({ message: "All books deleted", books });
+    res.status(200).send({ message: "All books deleted!", books });
   } catch (error) {
     res.status(400).send(error);
   }

@@ -9,12 +9,12 @@ exports.signin = async (req, res) => {
 
     const user = await User.findOne({ name });
     if (!user) {
-      return res.status(404).send({ message: "User not found" });
+      return res.status(404).send({ message: "User not found!" });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).send({ message: "Invalid credentials" });
+      return res.status(401).send({ message: "Invalid password!" });
     }
 
     // Generate token
@@ -27,7 +27,7 @@ exports.signin = async (req, res) => {
     );
 
     return res
-      .header("auth-token", token)
+      .header(`Authorization`, `Bearer ${token}`)
       .status(200)
       .send({ messages: "Login Succesful!", token });
   } catch (error) {
