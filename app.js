@@ -26,21 +26,6 @@ app.use(
   })
 );
 
-// Middleware Body Parser
-app.use(
-  bodyParser.json({
-    extended: true,
-    limit: "50mb",
-  })
-);
-
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-    limit: "50mb",
-  })
-);
-
 // Middleware Logger
 app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
@@ -49,5 +34,6 @@ app.use((req, res, next) => {
 
 // Call Routes
 require("./routes/auth.routes")(app);
+require("./routes/book.routes")(app);
 
 module.exports = app;
