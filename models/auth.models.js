@@ -19,7 +19,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.method("toJSON", function () {
   const { __v, _id, ...object } = this.toObject();
-  object.id = id;
+  object.id = _id;
   return object;
 });
 
