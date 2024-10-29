@@ -1,8 +1,8 @@
-const mongose = require("mongoose");
-const http = require("http");
-const db = require("./config/database");
 const app = require("./app");
+const db = require("./config/database");
 const dotenv = require("dotenv");
+const http = require("http");
+const mongose = require("mongoose");
 
 dotenv.config();
 
