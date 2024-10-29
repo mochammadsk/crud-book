@@ -1,7 +1,6 @@
+const cors = require("cors");
 const express = require("express");
 const session = require("express-session");
-const bodyParser = require("body-parser");
-const cors = require("cors");
 
 const app = express();
 
@@ -20,7 +19,7 @@ app.use(
 // Middleware Session
 app.use(
   session({
-    secret: "crud",
+    secret: "ProductZilla",
     resave: false,
     saveUninitialized: true,
   })
