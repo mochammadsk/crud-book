@@ -8,4 +8,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.method("toJSON", function () {
+  const { __v, _id, ...object } = this.toObject();
+  object.id = id;
+  return object;
+});
+
 module.exports = mongoose.model("user", userSchema);
