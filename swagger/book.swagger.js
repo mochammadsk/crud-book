@@ -29,7 +29,7 @@
  *           application/json:
  *             schema:
  *       404:
- *         description: Book failed added!
+ *         description: Failed create book!
  */
 
 /**
@@ -39,13 +39,13 @@
  *     tags:
  *       - Book
  *     summary: Get all data book
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         content:
  *           application/json:
  *             schema:
+ *       404:
+ *         description: Failed get book!
  */
 
 /**
@@ -55,8 +55,6 @@
  *     tags:
  *       - Book
  *     summary: Get book by id
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -68,6 +66,8 @@
  *         content:
  *           application/json:
  *             schema:
+ *       404:
+ *         description: Failed get book!
  */
 
 /**
@@ -96,6 +96,8 @@
  *         content:
  *           application/json:
  *             schema:
+ *       400:
+ *         description: Failed update book!
  */
 
 /**
@@ -111,7 +113,9 @@
  *       200:
  *         content:
  *           application/json:
- *             schema:
+ *             schema:]
+ *       400:
+ *         description: Failed delete book!
  */
 
 /**
@@ -134,4 +138,6 @@
  *         content:
  *           application/json:
  *             schema:
+ *       400:
+ *         description: Failed delete book!
  */
