@@ -7,10 +7,10 @@ module.exports = (app) => {
   router.post("/create", auth, book.createBook);
 
   // Get all books
-  router.get("/view", auth, book.getAllBooks);
+  router.get("/view", book.getAllBooks);
 
   // Get book by id
-  router.get("/view/:id", auth, book.getBookById);
+  router.get("/view/:id", book.getBookById);
 
   //  Update book by id
   router.put("/update/:id", auth, book.updateBook);
