@@ -34,7 +34,7 @@ export const createBook = async (
 
 // Get all books
 export const getAllBooks = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -91,7 +91,7 @@ export const deleteOneBook = async (
 
 // Delete all book
 export const deleteAllBooks = async (
-  req: Request,
+  _req: Request,
   res: Response
 ): Promise<void> => {
   try {
