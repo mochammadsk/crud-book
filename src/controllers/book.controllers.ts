@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import Book from "../models/book.models";
+import { Request, Response } from 'express';
+import Book from '../models/book.models';
 
 // Create book
 export const createBook = async (
@@ -12,7 +12,7 @@ export const createBook = async (
     // Check if book already exists
     const existingBook = await Book.findOne({ title });
     if (existingBook) {
-      res.status(400).send({ message: "Book already exists!" });
+      res.status(400).send({ message: 'Book already exists!' });
       return;
     }
 
@@ -26,9 +26,9 @@ export const createBook = async (
     await newBook.save();
     res
       .status(200)
-      .send({ message: "Book successfully added!", book: newBook });
+      .send({ message: 'Book successfully added!', book: newBook });
   } catch (error) {
-    res.status(400).send({ message: "error", error: error });
+    res.status(400).send({ message: 'error', error: error });
   }
 };
 
@@ -39,9 +39,14 @@ export const getAllBooks = async (
 ): Promise<void> => {
   try {
     const books = await Book.find();
-    res.status(200).send({ message: "Below is the book data!", books });
+    if (books.length === 0) {
+      res.status(404).send({ message: 'No books found!' });
+      return;
+    }
+
+    res.status(200).send({ message: 'Below is the book data!', books });
   } catch (error) {
-    res.status(400).send({ message: "error", error: error });
+    res.status(500).send({ message: 'error', error: error });
   }
 };
 
@@ -52,9 +57,10 @@ export const getBookById = async (
 ): Promise<void> => {
   try {
     const book = await Book.findById(req.params.id);
-    res.status(200).send({ message: "Book found!", book });
+
+    res.status(200).send({ message: 'Book found!', book });
   } catch (error) {
-    res.status(400).send({ message: "error", error: error });
+    res.status(404).send({ message: 'error', error: error });
   }
 };
 
@@ -70,7 +76,7 @@ export const updateBook = async (
       { title, author, year },
       { new: true }
     );
-    res.status(200).send({ message: "Book updated!", book });
+    res.status(200).send({ message: 'Book updated!', book });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -83,7 +89,7 @@ export const deleteOneBook = async (
 ): Promise<void> => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
-    res.status(200).send({ message: "Book deleted!", book });
+    res.status(200).send({ message: 'Book deleted!', book });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -96,7 +102,7 @@ export const deleteAllBooks = async (
 ): Promise<void> => {
   try {
     const books = await Book.deleteMany();
-    res.status(200).send({ message: "All books deleted!", books });
+    res.status(200).send({ message: 'All books deleted!', books });
   } catch (error) {
     res.status(400).send(error);
   }
