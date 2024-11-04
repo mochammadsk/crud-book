@@ -6,10 +6,8 @@
   "scripts": {
     "start": "node server.ts",
     "build": "tsc",
-    "dev": "nodemon server.ts",
-    "test": "jest --runInBand --detectOpenHandles --forceExit",
-    "test:coverage": "jest --coverage --runInBand",
-    "test:watch": "jest --watchAll --runInBand"
+    "dev": "nodemon src/server.ts",
+    "test": "jest --runInBand --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
@@ -26,10 +24,14 @@
     "mongoose": "^8.7.3",
     "nodemon": "^3.1.7",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
     "supertest": "^7.0.0",
