@@ -4,24 +4,23 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-interface UserPayload {
-  // Sesuaikan dengan payload JWT yang Anda gunakan
-  id: string;
-  // Tambahkan properti lain yang diperlukan
+interface JwtPayload {
+  user: string;
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: UserPayload; // Menambahkan tipe untuk req.user
-    }
-  }
+interface AuthRequest extends Request {
+  user?: JwtPayload;
 }
 
-export const auth = async (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
+    console.log(token);
     res.status(401).send({ message: "Unauthorized!" });
     return;
   }
@@ -30,7 +29,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const verified = jwt.verify(
       token,
       process.env.JWT_SECRET as string
-    ) as UserPayload;
+    ) as JwtPayload;
     req.user = verified;
     next();
   } catch (error) {
