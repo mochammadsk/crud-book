@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     /* Language and Environment */
-    "target": "ES2018",
-    "lib": ["ES2018", "ESNext.AsyncIterable"],
+    "target": "ES6",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
