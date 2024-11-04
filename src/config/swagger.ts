@@ -27,4 +27,4 @@ const swaggerConfig = {
   apis: ["./routes/*.js", "./swagger/*.js"],
 };
 
-module.exports = swaggerConfig;
+export default swaggerConfig;

@@ -1,13 +1,13 @@
-const app = require("./app");
-const db = require("./config/database");
-const dotenv = require("dotenv");
-const http = require("http");
-const mongose = require("mongoose");
+import dotenv from "dotenv";
+import http from "http";
+import mongose from "mongoose";
+import app from "./app";
+import db from "./config/database";
 
 dotenv.config();
 
 mongose
-  .connect(db.url, db.mongoseConfig)
+  .connect(db.url)
   .then(() => console.log("Connected to Database"))
   .catch((err) => {
     console.log("Failed to connect to Database", err);

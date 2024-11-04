@@ -1,5 +1,10 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+import mongoose, { Document } from "mongoose";
+import bcrypt from "bcrypt";
+
+export interface IUser extends Document {
+  name: string;
+  password: string;
+}
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,10 +22,4 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.method("toJSON", function () {
-  const { __v, _id, ...object } = this.toObject();
-  object.id = _id;
-  return object;
-});
-
-module.exports = mongoose.model("user", userSchema);
+export default mongoose.model<IUser>("user", userSchema);

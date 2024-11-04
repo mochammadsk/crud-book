@@ -1,14 +1,19 @@
-const Book = require("../models/book.models");
+import { Request, Response } from "express";
+import Book, { IBook } from "../models/book.models";
 
 // Create book
-exports.createBook = async (req, res) => {
+export const createBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { title, author, year } = req.body;
 
     // Check if book already exists
     const existingBook = await Book.findOne({ title });
     if (existingBook) {
-      return res.status(400).send({ message: "Book already exists!" });
+      res.status(400).send({ message: "Book already exists!" });
+      return;
     }
 
     // Create new book
@@ -28,7 +33,10 @@ exports.createBook = async (req, res) => {
 };
 
 // Get all books
-exports.getAllBooks = async (req, res) => {
+export const getAllBooks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const books = await Book.find();
     res.status(200).send({ message: "Below is the book data!", books });
@@ -38,7 +46,10 @@ exports.getAllBooks = async (req, res) => {
 };
 
 // Get book by id
-exports.getBookById = async (req, res) => {
+export const getBookById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const book = await Book.findById(req.params.id);
     res.status(200).send({ message: "Book found!", book });
@@ -48,7 +59,10 @@ exports.getBookById = async (req, res) => {
 };
 
 // Update book by id
-exports.updateBook = async (req, res) => {
+export const updateBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { title, author, year } = req.body;
     const book = await Book.findOneAndUpdate(
@@ -63,7 +77,10 @@ exports.updateBook = async (req, res) => {
 };
 
 // Delete book by id
-exports.deletOneBook = async (req, res) => {
+export const deleteOneBook = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
     res.status(200).send({ message: "Book deleted!", book });
@@ -73,11 +90,23 @@ exports.deletOneBook = async (req, res) => {
 };
 
 // Delete all book
-exports.deleteAllBooks = async (req, res) => {
+export const deleteAllBooks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const books = await Book.deleteMany();
     res.status(200).send({ message: "All books deleted!", books });
   } catch (error) {
     res.status(400).send(error);
   }
+};
+
+export default {
+  createBook,
+  getAllBooks,
+  getBookById,
+  updateBook,
+  deleteAllBooks,
+  deleteOneBook,
 };

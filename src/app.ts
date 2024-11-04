@@ -1,11 +1,13 @@
-const cors = require("cors");
-const express = require("express");
-const session = require("express-session");
-const swaggerConfig = require("./config/swagger");
-const swaggerJSDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+import cors from "cors";
+import express, { Express } from "express";
+import session from "express-session";
+import swaggerConfig from "./config/swagger";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import authRoutes from "./routes/auth.routes";
+import bookRoutes from "./routes/book.routes";
 
-const app = express();
+const app: Express = express();
 
 const swaggerSpec = swaggerJSDoc(swaggerConfig);
 
@@ -15,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
-    method: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
     credentials: true,
   })
@@ -27,6 +29,7 @@ app.use(
     secret: "ProductZilla",
     resave: false,
     saveUninitialized: true,
+    cookie: { maxAge: 60000 },
   })
 );
 
@@ -40,7 +43,7 @@ app.use((req, res, next) => {
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Call Routes
-require("./routes/auth.routes")(app);
-require("./routes/book.routes")(app);
+authRoutes(app);
+bookRoutes(app);
 
-module.exports = app;
+export default app;

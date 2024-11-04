@@ -1,7 +1,9 @@
-module.exports = (app) => {
-  const auth = require("../middleware/auth.middleware");
-  const router = require("express").Router();
-  const book = require("../controllers/book.controllers");
+import { Application, Router } from "express";
+import { auth } from "../middleware/auth.middleware";
+import book from "../controllers/book.controllers";
+
+export default (app: Application): void => {
+  const router = Router();
 
   // Create book
   router.post("/create", auth, book.createBook);
@@ -19,7 +21,7 @@ module.exports = (app) => {
   router.delete("/delete", auth, book.deleteAllBooks);
 
   // Delete book by id
-  router.delete("/delete/:id", auth, book.deletOneBook);
+  router.delete("/delete/:id", auth, book.deleteOneBook);
 
   app.use("/books", router);
 };
