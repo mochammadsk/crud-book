@@ -12,6 +12,7 @@ env:
   MONGODB_URI: mongodb://localhost:27017/crud
   NODE_ENV: test
   PORT: 3000
+  AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
 
 jobs:
   build-and-test:
