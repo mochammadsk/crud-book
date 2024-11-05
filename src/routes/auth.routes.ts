@@ -9,7 +9,7 @@ export default (app: Application): void => {
     try {
       await signin(req, res);
     } catch (err: any) {
-      res.status(400).json({
+      res.status(500).json({
         message: err.message,
       });
     }

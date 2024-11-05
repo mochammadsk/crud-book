@@ -21,7 +21,7 @@ export const auth = async (
 
   if (!token) {
     console.log(token);
-    res.status(401).send({ message: 'Unauthorized!' });
+    res.status(401).json({ message: 'Unauthorized!' });
     return;
   }
 
@@ -33,7 +33,15 @@ export const auth = async (
     req.user = verified;
     next();
   } catch (error) {
-    res.status(400).send({ message: 'Invalid token!' });
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: 'Unauthorized! Invalid token.' });
+    }
+    if (error instanceof jwt.TokenExpiredError) {
+      return res
+        .status(401)
+        .json({ message: 'Unauthorized! Token has expired.' });
+    }
+    return res.status(500).json({ message: 'Internal server error.', error });
   }
 };
 
