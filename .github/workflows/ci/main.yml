@@ -15,37 +15,41 @@ env:
   PORT: 3000
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
-
-  strategy:
-    matrix:
-      node-version: [20.12.0]
-      mongodb-version: [1.44.6]
+    env:
+      MONGODB_URI: mongodb://mongodb:27017/crud
+      NODE_ENV: test
+      PORT: 3000
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.12.0'
+        cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Run tests
       run: npm test
 
-    - name: Build the application
-      run: npm run build
-
   deploy:
+    runs-on: ubuntu-latest
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Deploy to Production
+      - name: Deploy to production
         run: |
-          echo "Deploying to production server..."
-          # Tambahkan skrip untuk proses deploy Anda, misalnya menggunakan SSH, Docker, atau layanan cloud
+          echo "Deployment step - add your deployment commands here"
