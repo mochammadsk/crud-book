@@ -4,18 +4,18 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
+env:
+  MONGODB_URI: mongodb://localhost:27017/crud
+  NODE_ENV: test
+  PORT: 3000
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    env:
-      MONGODB_URI: mongodb://mongodb:27017/crud
-      NODE_ENV: test
-      PORT: 3000
 
     strategy:
       matrix:
@@ -23,7 +23,7 @@ jobs:
         mongodb-version: ['7.0.7']
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js ${{ matrix.node-version }}
