@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
-import dotenv from "dotenv";
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -17,11 +17,11 @@ export const auth = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
     console.log(token);
-    res.status(401).send({ message: "Unauthorized!" });
+    res.status(401).send({ message: 'Unauthorized!' });
     return;
   }
 
@@ -33,7 +33,7 @@ export const auth = async (
     req.user = verified;
     next();
   } catch (error) {
-    res.status(400).send({ message: "Invalid token!" });
+    res.status(400).send({ message: 'Invalid token!' });
   }
 };
 

@@ -1,11 +1,11 @@
-import cors from "cors";
-import express, { Express } from "express";
-import session from "express-session";
-import swaggerConfig from "./config/swagger";
-import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
-import authRoutes from "./routes/auth.routes";
-import bookRoutes from "./routes/book.routes";
+import cors from 'cors';
+import express, { Express } from 'express';
+import session from 'express-session';
+import swaggerConfig from './config/swagger';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import authRoutes from './routes/auth.routes';
+import bookRoutes from './routes/book.routes';
 
 const app: Express = express();
 
@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
+    origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type'],
     credentials: true,
   })
 );
@@ -26,7 +26,7 @@ app.use(
 // Middleware Session
 app.use(
   session({
-    secret: "ProductZilla",
+    secret: 'ProductZilla',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 60000 },
@@ -40,7 +40,7 @@ app.use((req, _res, next) => {
 });
 
 // Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Call Routes
 authRoutes(app);

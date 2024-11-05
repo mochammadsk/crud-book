@@ -1,11 +1,11 @@
-import { Application, Router, Request, Response } from "express";
-import { signin } from "../controllers/auth.controllers";
+import { Application, Router, Request, Response } from 'express';
+import { signin } from '../controllers/auth.controllers';
 
 export default (app: Application): void => {
   const router = Router();
 
   // Login
-  router.post("/signin", async (req: Request, res: Response) => {
+  router.post('/signin', async (req: Request, res: Response) => {
     try {
       await signin(req, res);
     } catch (err: any) {
@@ -15,5 +15,5 @@ export default (app: Application): void => {
     }
   });
 
-  app.use("/", router);
+  app.use('/', router);
 };
