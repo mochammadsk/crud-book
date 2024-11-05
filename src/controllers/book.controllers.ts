@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, RequestHandler, Response } from 'express';
 import Book from '../models/book.models';
 
 // Create book
-export const createBook = async (
+export const createBook: RequestHandler = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -84,7 +84,13 @@ export const deleteOneBook = async (
   res: Response
 ): Promise<void> => {
   try {
-    const book = await Book.findByIdAndDelete(req.params.id);
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      res.status(404).json({ message: 'Book not found!' });
+      return;
+    }
+
+    await Book.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: 'Book deleted!', book });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error', error });
@@ -97,7 +103,13 @@ export const deleteAllBooks = async (
   res: Response
 ): Promise<void> => {
   try {
-    const books = await Book.deleteMany();
+    const books = await Book.find();
+    if (books.length === 0) {
+      res.status(404).json({ message: 'No books found!' });
+      return;
+    }
+
+    await Book.deleteMany();
     res.status(200).json({ message: 'All books deleted!', books });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error', error });

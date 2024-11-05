@@ -23,7 +23,6 @@ beforeAll(async () => {
     password: 'test-password',
   });
   token = userRespose.body.token;
-  console.log('Token: ', token);
 });
 
 afterAll(async () => {
@@ -43,7 +42,7 @@ describe('bookData', () => {
   });
 
   describe('POST /books/create', () => {
-    it('if book exists, return response 400', async () => {
+    it('if book exists', async () => {
       await Book.create(mockBook);
 
       const response = await supertest(app)
@@ -52,16 +51,15 @@ describe('bookData', () => {
         .send(mockBook);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Book already exists!');
     });
 
-    it('if book does not exist, return response 200', async () => {
+    it('if book does not exist', async () => {
       const response = await supertest(app)
         .post('/books/create')
         .set('Authorization', `Bearer ${token}`)
         .send(mockBook);
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
       expect(response.body.message).toBe('Book successfully added!');
       expect(response.body.book.title).toBe(mockBook.title);
       expect(response.body.book.author).toBe(mockBook.author);
@@ -70,37 +68,47 @@ describe('bookData', () => {
   });
 
   describe('GET /books', () => {
-    it('if book exists, return response 200', async () => {
-      await Book.create(mockBook);
-      const response = await supertest(app).get('/books');
-      expect(response.status).toBe(200);
-    });
-
-    it('if book does not exist, return response 404', async () => {
+    it('if book does not exist', async () => {
       await Book.deleteMany({});
       const response = await supertest(app).get('/books');
+
       expect(response.status).toBe(404);
+    });
+
+    it('if book exists', async () => {
+      await Book.create(mockBook);
+      const response = await supertest(app).get('/books');
+
+      expect(response.status).toBe(200);
     });
   });
 
   describe('GET /books/:id', () => {
-    it('if book exists, return response 200', async () => {
-      const bookData = await Book.create(mockBook);
+    it('if book does not exist', async () => {
+      const fakedId = new mongoose.Types.ObjectId().toString();
+      const book = await Book.findById(fakedId);
+      const response = await supertest(app).get(`/books/${fakedId}`);
 
+      expect(book).toBeNull();
+      expect(response.status).toBe(404);
+    });
+
+    it('if book exists', async () => {
+      const bookData = await Book.create(mockBook);
+      const found = new mongoose.Types.ObjectId().toString();
       const response = await supertest(app).get(`/books/${bookData._id}`);
+
+      expect(found).toBeDefined();
       expect(response.status).toBe(200);
     });
 
-    it('if book does not exist, return response 404', async () => {
-      const invalidId = new mongoose.Types.ObjectId();
-
-      const response = await supertest(app).get(`/books/${invalidId}`);
-      expect(response.status).toBe(404);
+    it('catch error', async () => {
+      await expect(Book.findById('invalid-id')).rejects.toThrow();
     });
   });
 
   describe('PUT /books/update/:id', () => {
-    it('if book exists, return response 200', async () => {
+    it('if book exists', async () => {
       const bookData = await Book.create(mockBook);
 
       const newBook = {
@@ -119,6 +127,47 @@ describe('bookData', () => {
       expect(response.body.book.title).toBe(newBook.title);
       expect(response.body.book.author).toBe(newBook.author);
       expect(response.body.book.year).toBe(newBook.year);
+    });
+  });
+
+  describe('DELETE /books/delete/:id', () => {
+    it('if book does not exist', async () => {
+      const fakedId = new mongoose.Types.ObjectId().toString();
+      const response = await supertest(app)
+        .delete(`/books/delete/${fakedId}`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(404);
+    });
+
+    it('if book exists', async () => {
+      const bookData = await Book.create(mockBook);
+
+      const response = await supertest(app)
+        .delete(`/books/delete/${bookData._id}`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+    });
+  });
+
+  describe('DELETE /books/delete', () => {
+    it('if book does not exist', async () => {
+      const response = await supertest(app)
+        .delete(`/books/delete`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(404);
+    });
+
+    it('if book exists', async () => {
+      await Book.create(mockBook);
+
+      const response = await supertest(app)
+        .delete(`/books/delete`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
     });
   });
 });

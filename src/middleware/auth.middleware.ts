@@ -16,7 +16,7 @@ export const auth = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
@@ -34,14 +34,15 @@ export const auth = async (
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({ message: 'Unauthorized! Invalid token.' });
+      res.status(401).json({ message: 'Unauthorized! Invalid token.' });
+      return;
     }
     if (error instanceof jwt.TokenExpiredError) {
-      return res
-        .status(401)
-        .json({ message: 'Unauthorized! Token has expired.' });
+      res.status(401).json({ message: 'Unauthorized! Token has expired.' });
+      return;
     }
-    return res.status(500).json({ message: 'Internal server error.', error });
+    res.status(500).json({ message: 'Internal server error.', error });
+    return;
   }
 };
 
