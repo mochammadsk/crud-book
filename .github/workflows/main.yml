@@ -45,7 +45,7 @@ jobs:
         run: npm install env-encryption
 
       - name: Decrypt env-secrets
-        run: npx env-encryption decrypt --key {{secrets.ENV_KEY}} --filename .env
+        run: npx env-encryption decrypt --key ${{secrets.ENV_KEY}} --filename .env
 
       - name: Run tests
         run: npm run test
