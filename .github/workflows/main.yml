@@ -42,10 +42,10 @@ jobs:
         run: npm ci
 
       - name: Decrypt secrets
-        run: npm env-encryption decrypt --key {{secrets.ENV_KEY}} --filename .env
+        run: npm install -g env-encryption && npm env-encryption decrypt --key {{secrets.ENV_KEY}} --filename .env
 
       - name: Run tests
-        run: npm test
+        run: npm run test
 
   deploy:
     needs: build-and-test
