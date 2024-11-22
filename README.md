@@ -1,1 +1,3 @@
-![Build Status](https://github.com/mochammadsk/crud-book/workflows/CRUD%BOOK%20CI/CD/badge.svg)
+## Status Badge
+
+[![CRUD BOOK CI/CD](https://github.com/mochammadsk/crud-book/actions/workflows/main.yml/badge.svg)](https://github.com/mochammadsk/crud-book/actions/workflows/main.yml)[![CRUD BOOK CI/CD](https://github.com/mochammadsk/crud-book/actions/workflows/main.yml/badge.svg)](https://github.com/mochammadsk/crud-book/actions/workflows/main.yml)
